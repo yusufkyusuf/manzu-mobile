@@ -64,8 +64,9 @@ export const usePosStore = create<PosState>()((set, get) => ({
   reset: () => set({ cart: [], paymentMethod: 'CASH' }),
 }));
 
+/** Rounded to kobo so float noise (e.g. 0.1 + 0.2) never reaches the receipt or POST /sales. */
 export function cartTotal(cart: CartItem[]): number {
-  return cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  return Math.round(cart.reduce((sum, i) => sum + i.price * i.quantity, 0) * 100) / 100;
 }
 
 export function cartItemCount(cart: CartItem[]): number {

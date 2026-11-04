@@ -40,6 +40,8 @@ function Section({ icon: Icon, title, right, children }: { icon: LucideIcon; tit
  */
 function saleErrorMessage(err: unknown, cart: CartItem[]): string {
   const e = toApiError(err);
+  // The request may have reached the server; retrying blindly could record the sale twice.
+  if (e.isNetwork) return `${e.message} The sale may still have been recorded — check Sales History before trying again.`;
   if (e.status < 500) return e.message || 'Failed to complete sale. Please try again.';
   const reason = e.serverReason ?? '';
   const id = /medication (\d+)/i.exec(reason)?.[1];
