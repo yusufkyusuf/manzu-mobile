@@ -13,13 +13,20 @@ export const ANALYTICS_RANGES: { value: AnalyticsRange; label: string }[] = [
   { value: 'custom', label: 'Custom' },
 ];
 
-// Same as the web filterOrdersByRange: custom dates are parsed as UTC midnight and only apply when both are set.
+/** Local midnight of a YYYY-MM-DD string (the day DateField shows). */
+function localDayStart(iso: string): number {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y ?? 0, (m ?? 1) - 1, d ?? 1).getTime();
+}
+
+// Web filterOrdersByRange, except custom dates cover whole local days: the web parses the end date as UTC midnight,
+// which drops every order placed on the end day itself.
 export function filterOrdersByRange(orders: OrderSummary[], range: AnalyticsRange, customStart: string, customEnd: string, now = Date.now()): OrderSummary[] {
   if (range === 'all') return orders;
   if (range === 'custom') {
     if (!customStart || !customEnd) return orders;
-    const start = new Date(customStart).getTime();
-    const end = new Date(customEnd).getTime();
+    const start = localDayStart(customStart);
+    const end = localDayStart(customEnd) + DAY_MS - 1;
     return orders.filter((o) => {
       const t = new Date(o.createdAt).getTime();
       return t >= start && t <= end;
