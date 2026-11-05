@@ -1,5 +1,1 @@
-import { ComingSoon } from '@/components/ui';
-
-export default function OrdersRoute() {
-  return <ComingSoon title="Orders" milestone={3} />;
-}
+export { OrdersScreen as default } from '@/features/orders/screens/OrdersScreen';
