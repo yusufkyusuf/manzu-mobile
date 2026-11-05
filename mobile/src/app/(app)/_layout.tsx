@@ -1,0 +1,25 @@
+import { Stack } from 'expo-router';
+
+import { useSessionValidation } from '@/features/auth/hooks';
+import { colors, fonts } from '@/theme';
+
+export default function AppLayout() {
+  useSessionValidation();
+  return (
+    <Stack
+      screenOptions={{
+        headerTintColor: colors.brandBlue,
+        headerTitleStyle: { fontFamily: fonts.semibold, color: colors.gray900 },
+        headerBackButtonDisplayMode: 'minimal',
+        contentStyle: { backgroundColor: colors.background },
+      }}
+    >
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="sales-history" options={{ title: 'Sales History' }} />
+      <Stack.Screen name="analytics" options={{ title: 'Analytics' }} />
+      <Stack.Screen name="payment" options={{ title: 'Payment' }} />
+      <Stack.Screen name="profile" options={{ title: 'Profile' }} />
+      <Stack.Screen name="staff" options={{ title: 'Staff' }} />
+    </Stack>
+  );
+}

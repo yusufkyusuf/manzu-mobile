@@ -1,0 +1,45 @@
+// GET /api/pharmacy/profile — manzu-b routes/pharmacy.js + pharmacy-profile.repository.js (findPharmacyUser / findPharmacy selects).
+// Prisma DateTime/Time serialise as ISO strings; Decimal (latitude/longitude) serialises as string.
+import type { PharmacyStatus, PharmacyType, PharmacyUserRole } from '@/features/auth/types';
+
+export interface ProfileUser {
+  id: number;
+  name: string;
+  email: string;
+  role: PharmacyUserRole;
+  lastLogin: string | null;
+}
+
+export interface ProfileOperatingHour {
+  id: number;
+  dayOfWeek: number;
+  openTime: string;
+  closeTime: string;
+}
+
+export interface ProfilePharmacy {
+  id: number;
+  name: string;
+  address: string;
+  lga: string;
+  state: string;
+  ward: string | null;
+  phone: string;
+  licenseNumber: string;
+  status: PharmacyStatus;
+  logoUrl: string | null;
+  latitude: string | null;
+  longitude: string | null;
+  deliveryAvailability: boolean | null;
+  pharmacyType: PharmacyType | null;
+  isActive: boolean;
+  createdAt: string;
+  verifiedAt: string | null;
+  OperatingHour: ProfileOperatingHour[];
+}
+
+export interface ProfileResponse {
+  message: string;
+  user: ProfileUser;
+  pharmacy: ProfilePharmacy;
+}
