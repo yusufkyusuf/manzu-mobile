@@ -1,5 +1,1 @@
-import { ComingSoon } from '@/components/ui';
-
-export default function DashboardRoute() {
-  return <ComingSoon title="Dashboard" milestone={2} />;
-}
+export { DashboardScreen as default } from '@/features/dashboard/screens/DashboardScreen';

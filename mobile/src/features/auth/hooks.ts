@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { getProfile, profileKeys } from '@/features/profile/api';
+import { profileQueryOptions } from '@/features/profile/api';
 import { isManager } from '@/lib/roles';
 
 import { login } from './api';
@@ -29,10 +29,8 @@ export function useSessionValidation() {
   const signOut = useSession((s) => s.signOut);
 
   const profile = useQuery({
-    queryKey: profileKeys.all,
-    queryFn: ({ signal }) => getProfile(signal),
+    ...profileQueryOptions,
     enabled: status === 'signedIn',
-    staleTime: 5 * 60_000,
   });
 
   useEffect(() => {
