@@ -24,6 +24,13 @@ export function CartItemRow({ item, onQuantity, onRemove, disabled }: Props) {
     setDraft(String(item.quantity));
   }
   const atMax = item.quantity >= item.availableStock;
+
+  // Commit on blur/submit (fires on native and web) and always re-show the clamped value.
+  const commitDraft = () => {
+    const next = Math.max(1, Math.min(parseInt(draft, 10) || 1, item.availableStock));
+    setDraft(String(next));
+    if (next !== item.quantity) onQuantity(item.medicationId, next);
+  };
   const meta = [item.form, item.packSize].filter(Boolean).join(' • ');
 
   return (
@@ -64,11 +71,8 @@ export function CartItemRow({ item, onQuantity, onRemove, disabled }: Props) {
           <TextInput
             value={draft}
             onChangeText={(t) => setDraft(t.replace(/[^0-9]/g, ''))}
-            onEndEditing={() => {
-              const next = parseInt(draft, 10) || 1;
-              onQuantity(item.medicationId, next);
-              setDraft(String(Math.max(1, Math.min(next, item.availableStock))));
-            }}
+            onBlur={commitDraft}
+            onSubmitEditing={commitDraft}
             editable={!disabled}
             keyboardType="number-pad"
             selectTextOnFocus
