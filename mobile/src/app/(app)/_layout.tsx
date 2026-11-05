@@ -16,6 +16,7 @@ export default function AppLayout() {
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="orders/[id]" options={{ title: 'Order Details' }} />
+      <Stack.Screen name="inventory/[medicationId]" options={{ title: 'Update Inventory' }} />
       <Stack.Screen name="sales-history" options={{ title: 'Sales History' }} />
       <Stack.Screen name="analytics" options={{ title: 'Analytics' }} />
       <Stack.Screen name="payment" options={{ title: 'Payment' }} />
